@@ -1,0 +1,121 @@
+{% extends "layouts/base.html" %}
+
+{% block title %} تصنيف الأسماء {% endblock %}
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}
+<style>
+  thead input {
+    width: 100%;
+  }
+
+  td {
+    text-align: center;
+  }
+
+  th {
+    text-align: center;
+  }
+</style>
+{% endblock stylesheets %}
+
+{% block content %}
+
+<main class="c-main">
+  <div class="container-fluid">
+    <div class="fade-in">
+
+      <div class="row">
+        <div class="col-md-12 pb-2">
+          <a href={{ url_for('base_blueprint.add_name') }} class="btn btn-primary btn-sm">إضافة اسم جديد</a>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col">
+
+
+          <div class="card">
+
+            <div class="col-md-12 pt-4">
+              <table id="example" class="display" style="width:100%">
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>الاسم</th>
+                    <th>التصنيف</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for row in data %}
+                  <tr>
+                    <td>{{row.id}}</td>
+                    <td>{{row.name}}</td>
+                    <td>{{row.gender}}</td>
+
+                    <td width="150">
+                      <a href="/admin/names/delete/{{row.id}}" class="btn btn-danger btn-delete btn-sm">delete</a>
+                    </td>
+                  </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}
+<script>
+  const btnDelete = document.querySelectorAll('.btn-delete');
+  if (btnDelete) {
+    const btnArray = Array.from(btnDelete);
+    btnArray.forEach((btn) => {
+      btn.addEventListener('click', (e) => {
+        if (!confirm('Are you sure you want to delete it?')) {
+          e.preventDefault();
+        }
+      });
+    })
+  }
+
+  $(document).ready(function () {
+    // Setup - add a text input to each footer cell
+    $('#example thead tr').clone(true).appendTo('#example thead');
+    $('#example thead tr:eq(1) th').each(function (i) {
+
+      var title = $(this).text();
+      if (title !== 'Actions' & title !== 'ID') {
+        $(this).html('<input type="text" placeholder="Search ' + title + '" />');
+
+        $('input', this).on('keyup change', function () {
+          if (table.column(i).search() !== this.value) {
+            table
+              .column(i)
+              .search(this.value)
+              .draw();
+          }
+        });
+      } else {
+        $(this).text(' ')
+      }
+
+    });
+
+    var table = $('#example').DataTable({
+      orderCellsTop: true,
+      fixedHeader: true
+    });
+
+
+  });
+
+</script>
+{% endblock javascripts %}

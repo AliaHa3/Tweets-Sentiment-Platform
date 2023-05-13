@@ -1,0 +1,59 @@
+<div class="c-sidebar c-sidebar-dark c-sidebar-fixed c-sidebar-lg-show" id="sidebar">
+  <div class="c-sidebar-brand d-lg-down-none">
+    <svg class="c-sidebar-brand-full" width="118" height="46" alt="CoreUI Logo">
+      <use xlink:href="/static/assets/brand/coreui.svg#full"></use>
+    </svg>
+    <svg class="c-sidebar-brand-minimized" width="46" height="46" alt="CoreUI Logo">
+      <use xlink:href="/static/assets/brand/coreui.svg#signet"></use>
+    </svg>
+  </div>
+  
+  <ul class="c-sidebar-nav">
+    
+    <li class="c-sidebar-nav-item"><a class="c-sidebar-nav-link" href="/home">
+        <svg class="c-sidebar-nav-icon">
+          <use xlink:href="/static/assets/vendors/@coreui/icons/svg/free.svg#cil-speedometer"></use>
+        </svg> عرض تقرير</a></li>
+
+    <li class="c-sidebar-nav-item"><a class="c-sidebar-nav-link" href="/report">
+        <svg class="c-sidebar-nav-icon">
+          <use xlink:href="/static/assets/vendors/@coreui/icons/svg/free.svg#cil-pencil"></use>
+        </svg> إنشاء تقرير</a></li>
+
+  
+        {% if current_user.is_authenticated %}
+        <li class="c-sidebar-nav-title">صفحات الإدارة</li>
+
+        <li class="c-sidebar-nav-item c-sidebar-nav-dropdown"><a class="c-sidebar-nav-link c-sidebar-nav-dropdown-toggle" href="#">
+          <svg class="c-sidebar-nav-icon">
+            <use xlink:href="/static/assets/vendors/@coreui/icons/svg/free.svg#cil-storage"></use>
+          </svg>مصادر البيانات</a>
+        <ul class="c-sidebar-nav-dropdown-items">
+          <li class="c-sidebar-nav-item"><a class="c-sidebar-nav-link" href={{ url_for('base_blueprint.lexicon_main_page') }}><span class="c-sidebar-nav-icon"></span> تصنيف الكلمات</a></li>
+          <li class="c-sidebar-nav-item"><a class="c-sidebar-nav-link" href={{ url_for('base_blueprint.names_main_page') }}><span class="c-sidebar-nav-icon"></span> تصنيف الأسماء</a></li>
+        </ul>
+      </li>
+
+
+      <li class="c-sidebar-nav-item"><a class="c-sidebar-nav-link" href={{ url_for('base_blueprint.edit_password_admin') }} >
+        <svg class="c-sidebar-nav-icon">
+          <use xlink:href="/static/assets/vendors/@coreui/icons/svg/free.svg#cil-lock-locked"></use>
+        </svg> تغيير كلمة السر</a></li>
+        
+
+      <li class="c-sidebar-nav-item"><a class="c-sidebar-nav-link" href={{ url_for('base_blueprint.register') }} >
+        <svg class="c-sidebar-nav-icon">
+          <use xlink:href="/static/assets/vendors/@coreui/icons/svg/free.svg#cil-user-follow"></use>
+        </svg> تسجيل حساب أدمن جديد</a></li>
+        
+      <li class="c-sidebar-nav-item"><a class="c-sidebar-nav-link" href={{ url_for('base_blueprint.logout') }} >
+        <svg class="c-sidebar-nav-icon">
+          <use xlink:href="/static/assets/vendors/@coreui/icons/svg/free.svg#cil-account-logout"></use>
+        </svg> تسجيل الخروج</a></li>
+
+
+        {% endif %}
+  </ul>
+  <button class="c-sidebar-minimizer c-class-toggler" type="button" data-target="_parent"
+    data-class="c-sidebar-minimized"></button>
+</div>

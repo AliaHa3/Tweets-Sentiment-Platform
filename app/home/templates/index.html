@@ -1,0 +1,658 @@
+{% extends "layouts/base.html" %}
+
+{% block title %} Dashboard {% endblock %}
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}
+
+<link href="/static/assets/vendors/@coreui/chartjs/css/coreui-chartjs.css" rel="stylesheet">
+
+
+{% endblock stylesheets %}
+
+{% block content %}
+<script>
+  var report = {{ report| tojson}};
+</script>
+
+<main class="c-main">
+  <div class="container-fluid">
+    <div class="fade-in">
+
+      <div class="row">
+        <!-- /.row-->
+        <div class="col">
+          <div class="card">
+            <div class="card-header text-right"><strong>بيانات التقرير</strong> </div>
+            <div class="card-body">
+              <p class="text-muted">
+
+                {% if msg %}
+                  {{ msg | safe }}
+                {% endif %}
+              </p>
+
+              <form class="form-horizontal" action="" method="POST">
+                <div class="form-group row">
+                  <label class="col-md-3 col-form-label" for="hf-reportid">رقم التقرير</label>
+                  <div class="col-md-9">
+                    <input class="form-control text-right" id="hf-reportid" type="text" name="hf-reportid"
+                      placeholder="أدخل رقم التقرير الخاص بك">
+                  </div>
+                  
+
+                </div>
+                
+                <div class="form-group row justify-content-end ml-1">
+                  <button class="btn btn-sm btn-primary" type="submit">إظهار التقرير</button>
+                </div>
+                
+              </form>
+            </div>
+            
+          </div>
+
+        </div>
+      </div>
+
+
+      <div class="row">
+
+        <div class="col-sm-6 col-md-3">
+          <div class="card text-white bg-success">
+            <div class="card-body">
+              <div class="text-muted text-left mb-4">
+                <svg class="c-icon c-icon-2xl">
+                  <use xlink:href="/static/assets/vendors/@coreui/icons/svg/free.svg#cil-people"></use>
+                </svg>
+              </div>
+              <div class="text-value-lg">{{report['total_actions']}}</div><small
+                class="text-value-sm font-weight-bold">عدد التفاعل
+                الكلي</small>
+
+            </div>
+          </div>
+        </div>
+        <!-- /.col-->
+
+        <div class="col-sm-6 col-md-2">
+          <div class="card text-white bg-warning">
+            <div class="card-body">
+              <div class="text-muted text-left mb-4">
+                <svg class="c-icon c-icon-2xl">
+                  <use xlink:href="/static/assets/vendors/@coreui/icons/svg/free.svg#cil-speech"></use>
+                </svg>
+              </div>
+              <div class="text-value-lg">{{report['total_published']}}</div><small
+                class="text-value-sm font-weight-bold">إجمالي التشر</small>
+
+            </div>
+          </div>
+        </div>
+        <!-- /.col-->
+
+        <div class="col-sm-6 col-md-2">
+          <div class="card text-white bg-primary">
+            <div class="card-body">
+              <div class="text-muted text-left mb-4">
+                <svg class="c-icon c-icon-2xl">
+                  <use xlink:href="/static/assets/vendors/@coreui/icons/svg/free.svg#cil-loop"></use>
+                </svg>
+              </div>
+              <div class="text-value-lg">{{report['total_retweet']}}</div><small
+                class="text-value-sm font-weight-bold">عدد إعادة
+                التغريد</small>
+
+            </div>
+          </div>
+        </div>
+        <!-- /.col-->
+
+        <div class="col-sm-6 col-md-2">
+          <div class="card text-white bg-danger">
+            <div class="card-body">
+              <div class="text-muted text-left mb-4">
+                <svg class="c-icon c-icon-2xl">
+                  <use xlink:href="/static/assets/vendors/@coreui/icons/svg/free.svg#cil-heart"></use>
+                </svg>
+              </div>
+              <div class="text-value-lg">{{report['total_likes']}}</div><small
+                class="text-value-sm font-weight-bold">عدد مرات
+                الإعجابات</small>
+
+            </div>
+          </div>
+        </div>
+        <!-- /.col-->
+
+        <div class="col-sm-6 col-md-3">
+          <div class="card text-white bg-info">
+            <div class="card-body">
+              <div class="text-muted text-left mb-4">
+                <svg class="c-icon c-icon-2xl">
+                  <use xlink:href="/static/assets/vendors/@coreui/icons/svg/brand.svg#cib-twitter"></use>
+                </svg>
+              </div>
+              
+
+              <div class="text-value-lg">
+              {% if report['total_tweet'] != 1 %}
+              {{report['total_tweet']}}
+              {% else %}
+              0
+              {% endif %}
+              </div><small
+                class="text-value-sm font-weight-bold">عدد التغريدات
+                الكلي</small>
+
+            </div>
+          </div>
+        </div>
+        <!-- /.col-->
+      </div>
+
+
+      <!-- /.row-->
+      <div class="row">
+
+        <div class='col'>
+          <div class="card">
+            <div class="card-body">
+              <div class="d-flex justify-content-between">
+
+
+                <div>
+                  <h4 class="card-title mb-0">إحصائيات التغريدات حسب اليوم</h4>
+                  <!--<div class="small text-muted">September 2019</div>-->
+                </div>
+              </div>
+              <div class="c-chart-wrapper" style="height:340px;margin-top:40px;">
+                <canvas class="chart" id="hours_chart" height="300"></canvas>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+
+
+      <!-- /.card-->
+      <div class="row">
+
+
+        <!-- /.col-->
+        <div class="col-sm-6">
+          <div class="card text-right">
+            <div class="card-header"> <strong>تحليل مصادر التغريد</strong>
+            </div>
+            <div class="card-body">
+
+              <div class="progress-group">
+                <div class="progress-group-header align-items-end">
+                  <svg class="c-icon progress-group-icon">
+                    <use xlink:href="/static/assets/vendors/@coreui/icons/svg/brand.svg#cib-android-alt"></use>
+                  </svg>
+                  <div>Twitter for Android</div>
+                  <div class="mfs-auto font-weight-bold mfe-2">{{report['analyse_sources']['Twitter for Android']}}
+                  </div>
+                  <div class="text-muted small">({{'%0.2f' % (report['analyse_sources']['Twitter for Android']
+                    /report['total_tweet'] * 100)}}%)</div>
+                </div>
+                <div class="progress-group-bars">
+                  <div class="progress progress-xs">
+                    <div class="progress-bar bg-gradient-success" role="progressbar"
+                      style="width: {{'%0.2f' % (report['analyse_sources']['Twitter for Android'] /report['total_tweet'] * 100)}}%"
+                      aria-valuenow="{{'%0.2f' % (report['analyse_sources']['Twitter for Android'] /report['total_tweet'] * 100)}}"
+                      aria-valuemin="0" aria-valuemax="100"></div>
+                  </div>
+                </div>
+              </div>
+              <div class="progress-group">
+                <div class="progress-group-header align-items-end">
+                  <svg class="c-icon progress-group-icon">
+                    <use xlink:href="/static/assets/vendors/@coreui/icons/svg/brand.svg#cib-apple"></use>
+                  </svg>
+                  <div>Twitter for iPhone</div>
+                  <div class="mfs-auto font-weight-bold mfe-2">{{report['analyse_sources']['Twitter for iPhone']}}</div>
+                  <div class="text-muted small">({{'%0.2f' % (report['analyse_sources']['Twitter for iPhone']
+                    /report['total_tweet'] * 100)}}%)</div>
+                </div>
+                <div class="progress-group-bars">
+                  <div class="progress progress-xs">
+                    <div class="progress-bar bg-gradient-success" role="progressbar"
+                      style="width: {{'%0.2f' % (report['analyse_sources']['Twitter for iPhone'] /report['total_tweet'] * 100)}}%"
+                      aria-valuenow="{{'%0.2f' % (report['analyse_sources']['Twitter for iPhone'] /report['total_tweet'] * 100)}}"
+                      aria-valuemin="0" aria-valuemax="100"></div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="progress-group">
+                <div class="progress-group-header align-items-end">
+                  <svg class="c-icon progress-group-icon">
+                    <use xlink:href="/static/assets/vendors/@coreui/icons/svg/free.svg#cil-screen-smartphone"></use>
+                  </svg>
+                  <div>Twitter Web App</div>
+                  <div class="mfs-auto font-weight-bold mfe-2">{{report['analyse_sources']['Twitter Web App']}}</div>
+                  <div class="text-muted small">({{'%0.2f' % (report['analyse_sources']['Twitter Web App']
+                    /report['total_tweet'] * 100)}}%)</div>
+                </div>
+                <div class="progress-group-bars">
+                  <div class="progress progress-xs">
+                    <div class="progress-bar bg-gradient-success" role="progressbar"
+                      style="width: {{'%0.2f' % (report['analyse_sources']['Twitter Web App'] /report['total_tweet'] * 100)}}%"
+                      aria-valuenow="{{'%0.2f' % (report['analyse_sources']['Twitter Web App'] /report['total_tweet'] * 100)}}"
+                      aria-valuemin="0" aria-valuemax="100"></div>
+                  </div>
+                </div>
+              </div>
+              <div class="progress-group">
+                <div class="progress-group-header align-items-end">
+                  <svg class="c-icon progress-group-icon">
+                    <use xlink:href="/static/assets/vendors/@coreui/icons/svg/free.svg#cil-screen-desktop"></use>
+                  </svg>
+                  <div>Twitter Web Client</div>
+                  <div class="mfs-auto font-weight-bold mfe-2">{{report['analyse_sources']['Twitter Web Client']}}</div>
+                  <div class="text-muted small">({{'%0.2f' % (report['analyse_sources']['Twitter Web Client']
+                    /report['total_tweet'] * 100)}}%)</div>
+                </div>
+                <div class="progress-group-bars">
+                  <div class="progress progress-xs">
+                    <div class="progress-bar bg-gradient-success" role="progressbar"
+                      style="width: {{'%0.2f' % (report['analyse_sources']['Twitter Web Client'] /report['total_tweet'] * 100)}}%"
+                      aria-valuenow="{{'%0.2f' % (report['analyse_sources']['Twitter Web Client'] /report['total_tweet'] * 100)}}"
+                      aria-valuemin="0" aria-valuemax="100"></div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+
+        <div class="col-sm-6 col-lg-6">
+
+          <div class="card text-right">
+            <div class="card-header"><strong>تحليل المشاعر في التغريدات</strong>
+            </div>
+            <div class="card-body">
+              <div class="c-chart-wrapper">
+                <canvas id="canvas-sentiment"></canvas>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- /.col-->
+      </div>
+
+
+      <div class="row">
+        <!-- /.row-->
+        <hr class="mt-0">
+
+        <div class="col-sm-6 col-lg-6">
+          <div class="card">
+            <div class="card-header bg-gradient-info content-center">
+              <svg class="c-icon c-icon-3xl text-white my-4">cil-clock
+                <use xlink:href="/static/assets/vendors/@coreui/icons/svg/free.svg#cil-clock"></use>
+              </svg>
+              <div class="c-chart-wrapper">
+                <canvas id="social-box-chart-3" height="90"></canvas>
+              </div>
+            </div>
+            <div class="card-body row text-center">
+              <div class="col">
+                <div class="text-value-xl">{{report['lowest_active_hour']}}</div>
+                <div class="text-uppercase text-muted small">أقل ساعة تفاعلاً</div>
+              </div>
+              <div class="c-vr"></div>
+              <div class="col">
+                <div class="text-value-xl">{{report['highest_active_hour']}}</div>
+                <div class="text-uppercase text-muted small">أعلى ساعة تفاعلاً</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+        <div class="col-sm-6">
+          <div class="card text-right">
+            <div class="card-header"><strong>تحليل المغردين</strong>
+            </div>
+            <div class="card-body">
+              <div class="progress-group">
+                <div class="progress-group-header">
+                  <svg class="c-icon progress-group-icon">
+                    <use xlink:href="/static/assets/vendors/@coreui/icons/svg/free.svg#cil-user"></use>
+                  </svg>
+                  <div>ذكور</div>
+                  <div class="mfs-auto font-weight-bold">{{'%0.2f' % (report['analyse_genders']['male']
+                    /report['total_tweet'] * 100)}}%</div>
+                </div>
+                <div class="progress-group-bars">
+                  <div class="progress progress-xs">
+                    <div class="progress-bar bg-gradient-warning" role="progressbar"
+                      style="width: {{'%0.2f' % (report['analyse_genders']['male'] /report['total_tweet'] * 100)}}%"
+                      aria-valuenow="{{'%0.2f' % (report['analyse_genders']['male'] /report['total_tweet'] * 100)}}"
+                      aria-valuemin="0" aria-valuemax="100"></div>
+                  </div>
+                </div>
+              </div>
+              <div class="progress-group">
+                <div class="progress-group-header">
+                  <svg class="c-icon progress-group-icon">
+                    <use xlink:href="/static/assets/vendors/@coreui/icons/svg/free.svg#cil-user-female"></use>
+                  </svg>
+                  <div>إناث</div>
+                  <div class="mfs-auto font-weight-bold">{{'%0.2f' % (report['analyse_genders']['female']
+                    /report['total_tweet'] * 100)}}%</div>
+                </div>
+                <div class="progress-group-bars">
+                  <div class="progress progress-xs">
+                    <div class="progress-bar bg-gradient-warning" role="progressbar"
+                      style="width: {{'%0.2f' % (report['analyse_genders']['female'] /report['total_tweet'] * 100)}}%"
+                      aria-valuenow="{{'%0.2f' % (report['analyse_genders']['female'] /report['total_tweet'] * 100)}}"
+                      aria-valuemin="0" aria-valuemax="100"></div>
+                  </div>
+                </div>
+              </div>
+              <div class="progress-group">
+                <div class="progress-group-header">
+                  <svg class="c-icon progress-group-icon">
+                    <use xlink:href="/static/assets/vendors/@coreui/icons/svg/free.svg#cil-x-circle"></use>
+                  </svg>
+                  <div>أخرى</div>
+                  <div class="mfs-auto font-weight-bold">{{'%0.2f' % (report['analyse_genders']['unknown']
+                    /report['total_tweet'] * 100)}}%</div>
+                </div>
+                <div class="progress-group-bars">
+                  <div class="progress progress-xs">
+                    <div class="progress-bar bg-gradient-warning" role="progressbar"
+                      style="width: {{'%0.2f' % (report['analyse_genders']['unknown'] /report['total_tweet'] * 100)}}%"
+                      aria-valuenow="{{'%0.2f' % (report['analyse_genders']['unknown'] /report['total_tweet'] * 100)}}"
+                      aria-valuemin="0" aria-valuemax="100"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="row">
+        <!-- /.row-->
+        <div class="col-sm-4">
+          <div class="card">
+            <div class="card-header"><strong>أكثر الدول ظهوراً في التغريدات</strong>
+            </div>
+
+            <div class="card-body">
+
+              {% for country in report['top_countries_mentions'] %}
+
+              <div class="progress-group">
+                <div class="progress-group-header">
+                  <svg class="c-icon progress-group-icon">
+                    <use xlink:href="/static/assets/vendors/@coreui/icons/svg/flag.svg#cif-{{country[0]|lower}}"></use>
+                  </svg>
+                  <div>{{country[1]}}</div>
+                  <div class="mfs-auto font-weight-bold mfe-2">{{country[2]}}</div>
+                  <div class="text-muted small">({{'%0.2f' % (country[2] /report['top_countries_mentions_count'] *
+                    100)}}%)</div>
+                </div>
+                <div class="progress-group-bars ">
+                  <div class="progress progress-xs">
+                    <div class="progress-bar bg-gradient-info" role="progressbar"
+                      style="width: {{'%0.2f' % (country[2] /report['top_countries_mentions_count'] * 100)}}%"
+                      aria-valuenow="{{'%0.2f' % (country[2] /report['top_countries_mentions_count'] * 100)}}"
+                      aria-valuemin="0" aria-valuemax="100"></div>
+                  </div>
+                </div>
+              </div>
+
+              {% endfor %}
+
+
+
+            </div>
+          </div>
+        </div>
+
+        <div class="col-sm-4">
+          <div class="card text-right">
+            <div class="card-header"><strong>أكثر الأوسمة استخداماً</strong>
+            </div>
+            <div class="card-body">
+
+
+              {% for hashtag in report['top_hashtags'] %}
+
+              <div class="progress-group">
+                <div class="progress-group-header">
+
+                  <a href="https://twitter.com/hashtag/{{hashtag[0]}}" target="_blank">#{{hashtag[0]}}</a>
+
+                  <div class="mfs-auto font-weight-bold mfe-2">{{hashtag[1]}}</div>
+                  <div class="text-muted small">({{'%0.2f' % (hashtag[1] /report['total_hashtags_count'] * 100)}}%)
+                  </div>
+                </div>
+                <div class="progress-group-bars">
+                  <div class="progress progress-xs justify-content-end">
+                    <div class="progress-bar bg-gradient-info" role="progressbar"
+                      style="width: {{'%0.2f' % (hashtag[1] /report['total_hashtags_count'] * 100)}}%"
+                      aria-valuenow="{{'%0.2f' % (hashtag[1] /report['total_hashtags_count'] * 100)}}" aria-valuemin="0"
+                      aria-valuemax="100"></div>
+                  </div>
+                </div>
+              </div>
+
+              {% endfor %}
+
+
+
+
+            </div>
+          </div>
+        </div>
+
+
+        <div class="col-sm-4">
+          <div class="card text-right">
+            <div class="card-header"><strong>أكثر المستخدمين ظهوراً في التغريدات</strong>
+            </div>
+
+            <div class="card-body">
+
+              {% for mention in report['top_mentions'] %}
+
+              <div class="progress-group">
+                <div class="progress-group-header">
+
+                  <a href="https://twitter.com/{{mention[0]}}" target="_blank">{{mention[0]}}</a>
+
+                  <div class="mfs-auto font-weight-bold mfe-2">{{mention[1]}}</div>
+                  <div class="text-muted small">({{'%0.2f' % (mention[1] /report['total_mention_count'] * 100)}}%)</div>
+                </div>
+                <div class="progress-group-bars">
+                  <div class="progress progress-xs justify-content-end">
+                    <div class="progress-bar bg-gradient-info" role="progressbar"
+                      style="width: {{'%0.2f' % (mention[1] /report['total_mention_count'] * 100)}}%"
+                      aria-valuenow="{{'%0.2f' % (mention[1] /report['total_mention_count'] * 100)}}" aria-valuemin="0"
+                      aria-valuemax="100"></div>
+                  </div>
+                </div>
+              </div>
+
+              {% endfor %}
+
+
+
+
+            </div>
+          </div>
+        </div>
+
+
+
+
+      </div>
+
+
+
+
+      <div class="row">
+        <!-- /.row-->
+
+        <div class="col-sm-4">
+          <div class="card text-right">
+            <div class="card-header"><strong>أكثر تغريدة حصلت على إعجاب</strong>
+            </div>
+            <div class="card-body">
+              <div>
+                <blockquote class="twitter-tweet" tw-align-center data-lang="ar">
+                  <p lang="ar" dir="rtl">
+                    <a href="{{report['most_liked_tweet']}}"></a>
+                </blockquote>
+                <br>
+              </div>
+
+
+            </div>
+          </div>
+        </div>
+
+        <div class="col-sm-4">
+          <div class="card text-right">
+            <div class="card-header"><strong>أكثر تغريدة تمت إعادة تغريدها</strong>
+            </div>
+            <div class="card-body">
+              <div>
+                <blockquote class="twitter-tweet" tw-align-center data-lang="ar">
+                  <p lang="ar" dir="rtl">
+                    <a href="{{report['most_retweet_tweet']}}"></a>
+                </blockquote>
+                <br>
+              </div>
+
+
+
+            </div>
+          </div>
+        </div>
+
+        <div class="col-sm-4">
+          <div class="card text-right">
+            <div class="card-header"><strong>أكثر تغريدة تفاعلاً</strong>ً
+            </div>
+            <div class="card-body">
+              <div>
+                <blockquote class="twitter-tweet" tw-align-center data-lang="ar">
+                  <p lang="ar" dir="rtl">
+                    <a href="{{report['most_active_tweet']}}"></a>
+                </blockquote>
+                <br>
+              </div>
+
+
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+</main>
+
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}
+
+<!-- Plugins and scripts required by this view-->
+<script src="/static/assets/vendors/@coreui/chartjs/js/coreui-chartjs.bundle.js"></script>
+<script src="/static/assets/vendors/@coreui/utils/js/coreui-utils.js"></script>
+<script src="/static/assets/js/main.js"></script>
+<script src="/static/assets/js/charts.js"></script>
+<script src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+<script>
+  var xValues = ['إيجابي', 'حيادي', 'سلبي'];
+  var yValues = [report['analyse_sentiments']['pos'], report['analyse_sentiments']['neutral'], report['analyse_sentiments']['neg']];
+  var barColors = [
+    "#2eb85c",
+    "#f9b115",
+    "#e55353",
+  ];
+
+  new Chart("canvas-sentiment", {
+    type: "doughnut",
+    data: {
+      labels: xValues,
+      datasets: [{
+        backgroundColor: barColors,
+        data: yValues
+      }]
+    },
+    options: {
+      title: {
+        display: false,
+        text: "Tweets Sentiment Analysis"
+      }
+    }
+  });
+</script>
+
+
+<script>
+  var xValues = ["00:00", "01:00", "02:00", "03:00", "04:00", "05:00",
+    "06:00", "07:00", "08:00", "09:00", "10:00", "11:00",
+    "12:00", "13:00", "14:00", "15:00", "16:00", "17:00",
+    "18:00", "19:00", "20:00", "21:00", "22:00", "23:00"];
+
+  new Chart("hours_chart", {
+    type: "line",
+    data: {
+      labels: xValues,
+      datasets: [{
+        data: report['total_tweets_per_hour'],
+        borderColor: "#3399ff",
+        fill: false,
+        pointBackgroundColor: "#3399ff",
+        label: 'عدد التغريدات'
+      }, {
+        data: report['total_likes_per_hour'],
+        borderColor: "#e55353",
+        fill: false,
+        pointBackgroundColor: "#e55353",
+        label: ' عدد الإعجابات'
+      }, {
+        data: report['total_retweets_per_hour'],
+        borderColor: "#321fdb",
+        fill: false,
+        pointBackgroundColor: "#321fdb",
+        label: ' عدد إعادة التغريد'
+      }, {
+        data: report['total_published_per_hour'],
+        borderColor: "#f9b115",
+        fill: false,
+        pointBackgroundColor: "#f9b115",
+        label: ' عدد ما نشر عن الموضوع'
+      }, {
+        data: report['total_actions_per_hour'],
+        borderColor: "#2eb85c",
+        fill: false,
+        pointBackgroundColor: "#2eb85c",
+        label: ' عدد التفاعل الكلي'
+      }
+      ]
+    },
+    options: {
+      legend: { display: false }
+    }
+  });
+</script>
+{% endblock javascripts %}

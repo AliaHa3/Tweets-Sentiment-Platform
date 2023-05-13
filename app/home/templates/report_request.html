@@ -1,0 +1,140 @@
+{% extends "layouts/base.html" %}
+
+{% block title %} Dashboard {% endblock %}
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}
+
+<link href="/static/assets/vendors/@coreui/chartjs/css/coreui-chartjs.css" rel="stylesheet">
+
+
+{% endblock stylesheets %}
+
+{% block content %}
+
+<main class="c-main">
+  <div class="container-fluid">
+    <div class="fade-in">
+
+      <div class="row">
+        <!-- /.row-->
+        <div class="col">
+          <div class="card">
+            <div class="card-header text-right"><strong>بحث جديد</strong> </div>
+            <div class="card-body text-right">
+              <form class="form-horizontal" action="" method="post">
+                <div class="form-group row">
+                  <label class="col-md-3 col-form-label" for="hf-query">محتوى البحث</label>
+                  <div class="col-md-9">
+                    <input class="form-control text-right" id="hf-query" type="text" name="hf-query"
+                      placeholder="أدخل الكلمة المراد البحث عنها">
+                  </div>
+
+                </div>
+                <div class="form-group row">
+                  <label class="col-md-3 col-form-label" for="hf-date">تاريخ البحث</label>
+                  <div class="col-md-9">
+                    <input class="form-control text-right" id="hf-date" type="date" name="hf-date" max="{{yesterday}}"
+                      placeholder="أدخل تاريخ اليوم المراد البحث فيه ..">
+                  </div>
+
+                </div>
+                <div class="form-group row">
+                  <label class="col-md-3 col-form-label" for="hf-email">البريد الإلكتروني</label>
+                  <div class="col-md-9">
+                    <input class="form-control text-right" id="hf-email" type="email" name="hf-email"
+                      placeholder="email@example.com">
+                  </div>
+
+                </div>
+
+                <div class="form-group row">
+                  <label class="col-md-3 col-form-label" for="hf-country">البلد (اختياري)</label>
+                  <div class="col-md-9">
+                    <select class="form-control" id="hf-country" name="hf-country">
+                      <option value="0">يرجى الاختيار من القائمة</option>
+                      {% for country in countries %}
+                        <option value={{country[1]}}>{{country[2]}}</option>
+                      {%endfor%}
+                    </select>
+                  </div>
+                </div>
+
+
+                <div class="form-group row  justify-content-end ml-1">
+                  <button class="btn btn-sm btn-primary" type="submit">استخراج التقرير</button>
+                </div>
+
+              </form>
+            </div>
+          </div>
+
+        </div>
+      </div>
+      <!-- /.row-->
+      {% if task_id != '' %}
+      <div class="row">
+        <div class="col">
+          <div class="card border-success">
+            <div class="card-header text-right"><strong>معرّف التقرير</strong> </div>
+            <div class="card-body">
+              <div class="row">
+                <div class="col-8">
+                  <p>
+                    يرجى منك الاحتفاظ بمعّرف التقرير الخاص بك التالي
+                كما سيتم إرسال إيميل لإخبارك عند انتهاء عملية تحليل وتوليد التقرير المطلوب .. شكراً
+                  </p>
+                </div>
+                <br>
+              </div>
+              <div class="row">
+                <div class="col-8">
+
+                  <div class="form-group">
+                    <div class="controls">
+                      <div class="input-group">
+                        <input class="form-control" id="myInput" value="{{task_id}}" size="16"
+                          type="text"><span class="input-group-append">
+                          <button class="btn btn-secondary" type="button"
+                            onclick="copyToClipboard() ">نسخ</button></span>
+                      </div>
+                    </div>
+                  </div>
+
+                </div>
+
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {% endif %}
+    </div>
+  </div>
+</main>
+
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}
+
+<!-- Plugins and scripts required by this view-->
+<script src="/static/assets/vendors/@coreui/chartjs/js/coreui-chartjs.bundle.js"></script>
+<script src="/static/assets/vendors/@coreui/utils/js/coreui-utils.js"></script>
+<script src="/static/assets/js/main.js"></script>
+<script src="/static/assets/js/charts.js"></script>
+<script src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+<script>
+  function copyToClipboard() {
+    var copyText = document.getElementById("myInput");
+    copyText.select();
+    copyText.setSelectionRange(0, 99999)
+    document.execCommand("copy");
+    alert("Copied the text: " + copyText.value);
+  }
+</script>
+
+{% endblock javascripts %}
