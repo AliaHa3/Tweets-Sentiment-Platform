@@ -4,6 +4,16 @@ Lexicon Arabic Tweets Sentiment Platform based on Hashtag (Responsive Wep Applic
 [Web Demo](https://youtu.be/cAqKSIp-f1U)<br>
 [Mobile Demo](https://youtu.be/ptvAxVro_Lc)<br>
 
+![image](https://github.com/AliaHa3/Tweets-Sentiment-Platform/assets/98602171/fa37bc8a-9de3-4770-9c16-18974940eb90)
+
+![image](https://github.com/AliaHa3/Tweets-Sentiment-Platform/assets/98602171/fd2a7347-c642-4be9-8311-9335d5abef93)
+
+![image](https://github.com/AliaHa3/Tweets-Sentiment-Platform/assets/98602171/60a4a5a7-2801-4cf4-a954-8028c49187ea)
+
+
+![image](https://github.com/AliaHa3/Tweets-Sentiment-Platform/assets/98602171/8c5d6713-af4c-4454-9b37-ddfd84c84bb5)
+
+
 ## Project Goal
 The project aims to search for tweets based on the following data:
 * A word or hashtag.
@@ -33,12 +43,15 @@ It fetches tweets from Twitter first, then analyzes them, and then sends an aler
 * **Guest**: has two web pages
     * The main page to enter the id of the search process and to show all the analyzes in an interactive way and illustrations
     * Report creation page: In it, the requirements for the search to be conducted are entered
+    ![image](https://github.com/AliaHa3/Tweets-Sentiment-Platform/assets/98602171/0a7fbce8-8d02-43b9-998d-0563ef3625b4)
+
 * **Admin**: has access to the regular user pages as well as the following pages:
     * Change password page.
     * New admin registration page.
     * A page for browsing, searching, and deleting words used to classify tweets according to their feelings (The number of words in the database is currently 13,120).
     * A page for browsing, searching, and deleting words used to classify the gender of tweeters by name (The number of names currently in the database is 6,348).
 Default Admin account (Username : admin, Password: 123456)
+![image](https://github.com/AliaHa3/Tweets-Sentiment-Platform/assets/98602171/55b0edb0-456f-42bb-acec-b44159096a5f)
 
 **Note:**
 For the testing process, Google Gmail was approved, but its free service provides only 100 emails per month, so you must adopt a paid version of it or rely on your own mail server
