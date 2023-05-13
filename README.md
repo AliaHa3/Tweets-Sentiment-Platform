@@ -6,12 +6,16 @@ Lexicon Arabic Tweets Sentiment Platform based on Hashtag (Responsive Wep Applic
 
 ![image](https://github.com/AliaHa3/Tweets-Sentiment-Platform/assets/98602171/fa37bc8a-9de3-4770-9c16-18974940eb90)
 
-![image](https://github.com/AliaHa3/Tweets-Sentiment-Platform/assets/98602171/fd2a7347-c642-4be9-8311-9335d5abef93)
-
-![image](https://github.com/AliaHa3/Tweets-Sentiment-Platform/assets/98602171/60a4a5a7-2801-4cf4-a954-8028c49187ea)
 
 
-![image](https://github.com/AliaHa3/Tweets-Sentiment-Platform/assets/98602171/8c5d6713-af4c-4454-9b37-ddfd84c84bb5)
+## Technologies and Tools
+
+* Wep Framework - [**Flask**](https://flask.palletsprojects.com/en/2.3.x/)
+* Web UI - [**Bootstrap 5**](https://getbootstrap.com/docs/5.0/getting-started/introduction/)
+* Message Queue - [**RabbitMQ**](https://www.rabbitmq.com/download.html)
+* SQL ORM  - [**SQLAlchemy**](https://www.sqlalchemy.org/)
+* Language - [**Python**](https://www.python.org)
+* VM Linux
 
 
 ## Project Goal
@@ -103,3 +107,13 @@ rm server_pid.txt
 kill -9 `cat workers_pid.txt`
 rm workers_pid.txt
 ```
+
+## Images
+![image](https://github.com/AliaHa3/Tweets-Sentiment-Platform/assets/98602171/fa37bc8a-9de3-4770-9c16-18974940eb90)
+
+![image](https://github.com/AliaHa3/Tweets-Sentiment-Platform/assets/98602171/fd2a7347-c642-4be9-8311-9335d5abef93)
+
+![image](https://github.com/AliaHa3/Tweets-Sentiment-Platform/assets/98602171/60a4a5a7-2801-4cf4-a954-8028c49187ea)
+
+
+![image](https://github.com/AliaHa3/Tweets-Sentiment-Platform/assets/98602171/8c5d6713-af4c-4454-9b37-ddfd84c84bb5)
