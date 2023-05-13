@@ -79,8 +79,15 @@ For the testing process, Google Gmail was approved, but its free service provide
 ```Pip install –r requirements.txt```
 
 5.	Open config.py and change the following parameters:
-
 (the parameters of email and ip server of deployment server)
+```
+MAIL_SERVER = 'smtp.gmail.com'
+MAIL_PORT = 465
+MAIL_USE_SSL= True
+MAIL_DEFAULT_SENDER = 'sender@gmail.com'
+MAIL_USERNAME = 'sender@gmail.com'
+MAIL_PASSWORD = 'emailpassword'
+```
 
 6. run the following commands:
 ```
