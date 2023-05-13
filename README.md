@@ -1,8 +1,8 @@
 # Tweets-Sentiment-Platform
 Lexicon Arabic Tweets Sentiment Platform based on Hashtag (Responsive Wep Application)
 
-[Web Demo](https://youtu.be/cAqKSIp-f1U)
-[Mobile Demo](https://youtu.be/ptvAxVro_Lc)
+[Web Demo](https://youtu.be/cAqKSIp-f1U)</b>
+[Mobile Demo](https://youtu.be/ptvAxVro_Lc)</b>
 
 ## Project Goal
 The project aims to search for tweets based on the following data:
