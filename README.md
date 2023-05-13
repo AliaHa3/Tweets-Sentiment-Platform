@@ -1,5 +1,8 @@
 # Tweets-Sentiment-Platform
-Lexicon Arabic Tweets Sentiment Platform based on Hashtag
+Lexicon Arabic Tweets Sentiment Platform based on Hashtag (Responsive Wep Application)
+
+[Web Demo](https://youtu.be/cAqKSIp-f1U)
+[Mobile Demo](https://youtu.be/ptvAxVro_Lc)
 
 ## Project Goal
 The project aims to search for tweets based on the following data:
@@ -67,8 +70,8 @@ For the testing process, Google Gmail was approved, but its free service provide
 (the parameters of email and ip server of deployment server)
 
 6. run the following commands:
-```nohup gunicorn --bind 0.0.0.0:5003 run:app > server.log 2>&1 &
-echo $! > server_pid.txt
+```
+nohup gunicorn --bind 0.0.0.0:5003 run:app > server.log 2>&1 & echo $! > server_pid.txt
 
 nohup celery -A celery_worker:celery worker  --loglevel=info > workers.log 2>&1 & echo $! > workers_pid.txt
 ```
